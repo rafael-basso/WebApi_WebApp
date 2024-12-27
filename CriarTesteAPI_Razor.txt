@@ -1,0 +1,128 @@
+BACK
+1- criar novo projeto ASP.NET Core Web API dentro de uma PASTA
+2- right lick solution/nugget package/ Microsoft.EntityFrameworkCore & Microsoft.EntityFrameworkCore.SqlServer
+3- criar pasta para BANCO/pasta LOGS e DATA;criar banco SQL SERVER(criar tabela nome plural)
+
+4- renomear controller para Usuários.
+**FAZER DEPOIS** - Inserir o IMemoryCache para usar no GetById(), pois é chamado a cada clique no editar e deixa melhor performance:
+
+ if (!_cache.TryGetValue(id, out User? entity))
+                {
+                    entity = await _dbContext.Users.FindAsync(id);
+
+                    if (entity is null)
+                    {
+                        throw new Exception("Usuário não encontrado");
+                    }
+
+                    _cache.Set(id, entity, TimeSpan.FromMinutes(5));
+                }
+
+                return Ok(entity);
+
+e deixar todas controllers como async Task<> e await nas chamadas no banco e a consulta padrão Get() com "var entity = await _dbContext.Users.AsNoTracking().ToListAsync();"; não esquecer de inserir o "_cache.Remove(id);" no PUT() para zerar o cache
+
+5- criar pasta Models/class => responses e classe Usuário-DTO
+6- Adicionar AppDbContext: criar prop Nome do banco tipo <DbSet>; deixar construtor padrão; herdar classe de :DbContext e inserir OVERRRIDE com connection string::
+
+ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+   {
+         optionsBuilder.UseSqlServer("Server=RAFAEL;Database=DB_USERS;Trusted_Connection=True;TrustServerCertificate=True;Connection Timeout=30;");
+   }
+
+7- na controller, criar os GET/POST/PUT/DELETE com [Route], [ProducesResponse...] etc
+8- inserir no Program.cs:
+
+builder.Services.AddMemoryCache();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:7285") //end do front
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
+app.UseCors("AllowSpecificOrigin"); //depois de USseRouting() e antes de UseAuthorization()
+
+app.MapControllers(); // depois de UseAuthorization()
+
+**para separar a API em projetos: add new project/class library (cada projeto deve ser application-useCase, communication-req/re, infrastructure-BD)
+
+*********************************************************************************
+
+FRONT
+1- criar novo projeto: right click solution/ ASP.NET Core Web App(Razor Pages)
+2- copiar url da API e inserir no Program.cs do FRONT + inserir o USING do projeto API onde contém o DTO da base de dados + código seguinte após o "AddRazorPages()" OU posso criar Project dependência manualmente //right click "dependencia"/add Project reference/adicionar API Project:
+
+using TESTEAPI2_Front.Services;
+
+builder.Services.AddHttpClient<WeatherForecastService>(client => //SERVIÇO CRIADO PARA CONECTAR COM BASE DE DADOS
+{
+    client.BaseAddress = new Uri("https://localhost:7001/"); //URL DA API
+    client.DefaultRequestHeaders.Accept.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+});
+
+4-criar serviço para chamar a controller da API (o GET de todo o conteúdo da tabela específica) //inserir referencia da Model da API; copiar código da index.cshtml.cs para dar inicio:
+
+public class GetUsersService
+    {
+        private readonly HttpClient _httpClient;
+        private readonly ILogger<GetUsersService> _logger;
+
+        public GetUsersService(HttpClient httpClient, ILogger<GetUsersService> logger)
+        {
+            _httpClient = httpClient;
+            _logger = logger;
+        }
+
+        public async Task<List<User>> GetUsersAsync()
+        {
+            try
+            {
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+
+                var response = await _httpClient.GetAsync("Usuario", cts.Token); //aqui é o [Route] da CONTROLLER na API, posso usar qualquer rota que esteja na controller
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<User>>();
+                }
+                else
+                {
+                    return new List<User>();
+                }                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching Users");
+                throw;
+            }
+        }
+    }
+
+5- realizar as alterações necessárias no index.cshtml (usar a Model com DTO da base) e o index.chtml.cs(inserir using PROJETO API e pasta MODELS + incluir serviço para a busca de dados na chamada inicial) com os tipos da base de dados da API (aqui é o carregamento inicial do Get()):
+ public class IndexModel : PageModel
+    {
+        private readonly GetUsersService _userService;
+        public List<User> Users { get; set; } = [];
+
+        public IndexModel(GetUsersService service)
+        {
+            _userService = service;
+        }
+
+        public async Task OnGetAsync()
+        {
+            Users = await _userService.GetUsersAsync();
+        }
+    }
+
+**a prop Users já referencia a classe User da API, podendo usar na index.chtml importando a IndexModel
+
+5- rodar os dois projetos
+6- adicionar o CDN do bootbox no final da layout.cshtml
