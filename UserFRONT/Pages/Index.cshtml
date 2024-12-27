@@ -1,0 +1,92 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div id="main">
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+    </div>
+
+    <input type="hidden" id="usuarioID" value="" />
+    <button type="button" id="novoUsuario" class="btn btn-success">Novo Usuário</button>
+
+    @if (Model.Users.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Emmail</th>
+                    <th>Phone Number</th>
+                    <th>Ativo</th>
+                    <th>Data</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.FirstName</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.Active</td>
+                        <td>@user.UpdatedAt</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="abrirEditarUsuario(@Html.Raw(user.Id))">editar</button>
+                            <button type="button" class="btn btn-danger" onclick="deletarUsuario(@Html.Raw(user.Id))">deletar</button>                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div>No Users Found</div>
+    }
+
+    <div id="modalUsuario" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Novo usuário</h5>
+                    <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="nomeUsuario" type="text" placeholder="Nome" />
+                    <input id="emailUsuario" type="text" placeholder="Email" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Fechar</button>
+                    <button id="salvarNovoUsuario" type="button" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalEditarUsuario" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar usuário</h5>
+                    <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="editarNomeUsuario" type="text" placeholder="Nome" />
+                    <input id="editarEmailUsuario" type="text" placeholder="Email" />
+                    <input id="editarTelefoneUsuario" type="text" placeholder="Telefone" />
+                    <input id="editarAtivoUsuario" type="checkbox" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" id="editarUsuario" class="btn btn-primary">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-none" id="loading">loading...</div>
