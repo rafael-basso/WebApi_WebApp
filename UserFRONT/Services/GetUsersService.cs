@@ -19,7 +19,7 @@ namespace UserFRONT.Services
             {
                 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
-                var response = await _httpClient.GetAsync("User", cts.Token); //aqui é o [Route] da CONTROLLER na API
+                var response = await _httpClient.GetAsync("", cts.Token); //aqui é o [Route] da CONTROLLER na API
 
                 if (response.IsSuccessStatusCode)
                 {

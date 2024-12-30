@@ -12,13 +12,13 @@ $(".close").on('click', function () {
 });
 
 function abrirEditarUsuario(id) {
-    const url = `https://localhost:7129/User/${id}`;
+    const url = `https://userapiapi.azure-api.net/User/${id}`;
 
     $.ajax({
         url: url,
         cache: true,
         type: 'GET',
-        contentType: 'application/json',
+        contentType: 'application/json',       
         beforeSend: function () {
             $("#modalEditarUsuario").modal('show');
         },
@@ -30,7 +30,6 @@ function abrirEditarUsuario(id) {
             $("#usuarioID").val(response.id);
         },
         error: function (xhr, status, error) {
-            debugger
             $("#modalEditarUsuario").modal('hide');
 
             bootbox.alert({
@@ -42,7 +41,7 @@ function abrirEditarUsuario(id) {
 }
 
 function deletarUsuario(id) {
-    const url = `https://localhost:7129/User/deletar/${id}`;
+    const url = `https://userapiapi.azure-api.net/User/deletar/${id}`;
 
     $.ajax({
         url: url,
@@ -88,7 +87,7 @@ $("#editarUsuario").on('click', function () {
         alert("Nome e email são obrigatórios");
     } else {
         $.ajax({
-            url: `https://localhost:7129/User/atualizar/${id}`,
+            url: `https://userapiapi.azure-api.net/User/atualizar/${id}`,
             cache: true,
             type: 'PUT',
             contentType: 'application/json',
@@ -136,10 +135,10 @@ $("#salvarNovoUsuario").on('click', function () {
         alert("Nome e email são obrigatórios");
     } else {
         $.ajax({
-            url: 'https://localhost:7129/User/novo',
+            url: 'https://userapiapi.azure-api.net/User/novo',
             cache: true,
             type: 'POST',
-            contentType: 'application/json',
+            contentType: 'application/json',            
             data: JSON.stringify({
                 FirstName: nome,
                 Email: email
