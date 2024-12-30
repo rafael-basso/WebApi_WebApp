@@ -7,7 +7,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddHttpClient<GetUsersService>(client => //GetUsersService: para buscar base de dados na tela inicial
 {
-    client.BaseAddress = new Uri("https://localhost:7129/"); //URL DA API
+    //client.BaseAddress = new Uri("https://localhost:7129/"); //URL DA API local
+    client.BaseAddress = new Uri("https://userapiapi.azure-api.net/User/"); //URL DA API Portal Azure
     client.DefaultRequestHeaders.Accept.Clear();
     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 });

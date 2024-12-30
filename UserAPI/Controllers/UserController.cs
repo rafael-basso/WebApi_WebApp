@@ -11,14 +11,13 @@ namespace UserAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMemoryCache _cache;
-        private readonly ILogger<UserController> _logger;
         private readonly AppDBContext _dbContext;
 
-        public UserController(ILogger<UserController> logger, IMemoryCache cache)
+        public UserController(IMemoryCache cache, AppDBContext dbContext)
         {
             _cache = cache;
-            _logger = logger;
-            _dbContext = new AppDBContext();
+            _dbContext = dbContext;
+            //_dbContext = new AppDBContext();
         }
 
         [HttpGet]
