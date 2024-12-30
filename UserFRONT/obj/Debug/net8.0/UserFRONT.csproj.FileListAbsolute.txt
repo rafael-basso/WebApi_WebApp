@@ -78,6 +78,7 @@ C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\UserFRONT.
 C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\UserFRONT.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\UserFRONT.RazorAssemblyInfo.cache
 C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\UserFRONT.RazorAssemblyInfo.cs
+C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\UserFRONT.sourcelink.json
 C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\rafae\source\repos\Back_Front_MVC\UserFRONT\obj\Debug\net8.0\staticwebassets\msbuild.UserFRONT.Microsoft.AspNetCore.StaticWebAssets.props

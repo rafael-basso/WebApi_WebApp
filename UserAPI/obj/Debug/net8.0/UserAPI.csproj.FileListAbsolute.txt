@@ -70,6 +70,7 @@ C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\UserAPI.Asse
 C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\UserAPI.csproj.CoreCompileInputs.cache
 C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\UserAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\UserAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\UserAPI.sourcelink.json
 C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\rafae\source\repos\Back_Front_MVC\UserAPI\obj\Debug\net8.0\staticwebassets\msbuild.UserAPI.Microsoft.AspNetCore.StaticWebAssets.props
